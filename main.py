@@ -58,6 +58,7 @@ def signup():
             new_user = User(username=username, email=email, password=encpassword)
             db.session.add(new_user)
             db.session.commit()
+            print('hi')
             return render_template('login.html')
     else:
         return render_template('/signup.html')

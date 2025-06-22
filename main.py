@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key="thrisshapatil"
 
 #app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@Localhost/database_table_name
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/hms'
+app.config['SQLALCHEMY_DATABASE_URL']='mysql://root:@localhost/hms'
 db=SQLAlchemy(app)
 
 #here we will create db models that is tables

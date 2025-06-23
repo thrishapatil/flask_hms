@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session,redirect
+from flask import Flask,render_template,request,session,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -9,8 +9,8 @@ local_server=True
 app = Flask(__name__)
 app.secret_key="thrisshapatil"
 
-#app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@Localhost/database_table_name
-app.config['SQLALCHEMY_DATABASE_URL']='mysql://root:@localhost/hms'
+#app.config['SQLALCHEMY_DATABASE_URI']='mysql://username:password@Localhost/database_table_name
+app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/hms'
 db=SQLAlchemy(app)
 
 #here we will create db models that is tables
@@ -49,7 +49,7 @@ def signup():
         email=request.form.get('email')
         password=request.form.get('password')
         # print(username,email,password)
-        user=User.query.filter_by(email=email)
+        user=User.query.filter_by(email=email).first()
         if user:
             print("Email Already Exist")
             return render_template('/signup.html')
@@ -58,26 +58,27 @@ def signup():
             new_user = User(username=username, email=email, password=encpassword)
             db.session.add(new_user)
             db.session.commit()
-            print('hi')
             return render_template('login.html')
     else:
-        return render_template('/signup.html')
+        return render_template('signup.html')
     
 
-@app.route("/login")
+@app.route("/login",methods=['GET','POST'])
 def login():
     if request.method=='POST':
         email=request.form.get('email')
         password=request.form.get('password')
-        return render_template('login.html')
+        print(email)
+    #     user=User.query.filter_by(email=email).first()
+    #     print
+    #     if user and check_password_hash(user.password,password):
+    #         login_user(user)
+    #         return redirect(url_for('/'))
+    return render_template('login.html')
 
 @app.route("/logout")
 def logout():
     return render_template('login.html')
-
-
-
-
 
 
 @app.route('/test')
